@@ -1,16 +1,16 @@
-//server.js
-//adding opensource modules to application 
-var express = require('express'); //express 
-var path = require('path'); //for refering physical files here
-var logger = require('morgan'); 
-var cookieParser = require('cookie-parser'); //for maintain sessions
-var bodyParser = require('body-parser'); //for parsing json
-var bcrypt = require('bcrypt-nodejs'); 
-var passport = require('passport'); //Using passportjs for authentication
-var LocalStrategy = require('passport-local').Strategy; //using passport strategy
-var session = require('express-session'); //for maintaining sessions
-var mongoose = require('mongoose'); //for mongodb, database
-var models_user = require('./Angular/Models/user.js'); // refering models in server.js
+//adding opensource modules to application 
+var express = require('express');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var bcrypt = require('bcrypt-nodejs');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var session = require('express-session');
+var mongoose = require('mongoose');
+var models_user = require('./Angular/Models/user.js');
 
 //connection database
 mongoose.connect('mongodb://localhost/AngularizeApp');
@@ -30,7 +30,7 @@ app.set('view engine', 'ejs');
 app.use(cookieParser());
 app.use(logger('dev'));
 app.use(session({
-  secret: 'keyboard cat'
+  secret: 'keyboard cat'
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -46,15 +46,16 @@ app.use(express.static(path.join(__dirname, 'Angular')));
 app.use(express.static(path.join(__dirname, 'Views/Main')));
 app.use(express.static(path.join(__dirname, 'Views/Authentication')));
 
+
 //providing auth-api to passport so that it can use it.
 var initPassport = require('./Passport/passport-init');
 initPassport(passport);
 
 //running server on node
 var server = app.listen(3000, function () {
-  var host = server.address().address;
-  var port = server.address().port;
-  console.log('Example app listening at http://%s:%s', host, port);
+  var host = server.address().address;
+  var port = server.address().port;
+  console.log('Example app listening at http://%s:%s', host, port);
 });
 
 //exporting this application as a module
